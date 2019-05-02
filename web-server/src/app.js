@@ -3,6 +3,9 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
+
 const app = express()
 
 // Define paths for Express config
@@ -54,11 +57,25 @@ app.get('/weather', (req, res) => {
         })
     }
 
-    res.send({
-        forecast:'Sunny day',
-        location:'Hong Kong',
-        address: req.query.address
+    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+        if(error){
+            return res.send({ error })
+        }   
+        // Callback Chaining
+        forecast(latitude, longitude, (error, forecastData) => { 
+            if(error){
+                return res.send({ error })
+            }    
+
+            res.send({
+                address: req.query.address,
+                location,
+                forecast: forecastData
+            })    
+        })
+    
     })
+
 })
 
 app.get('/products', (req, res) => {
