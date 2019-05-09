@@ -14,7 +14,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     const db = client.db(databaseName)
 
-    // Insertion
+    // C
 
     // db.collection('users').insertMany([
     //     {
@@ -58,6 +58,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
 
 
+    // R
 
     // db.collection('users').findOne({ _id: new ObjectID('5cd2e3584a676b3f77fa4a4a' )}, (error, user) => {
     //     if(error){
@@ -76,19 +77,46 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     // })
 
 
-    db.collection('tasks').findOne({ _id: new ObjectID('5cd2e64af355a64036604897') }, (error, task) => {
-        if(error){
-            return console.log("Unable to find task")
-        }
-        console.log(task)
-    })
+    // db.collection('tasks').findOne({ _id: new ObjectID('5cd2e64af355a64036604897') }, (error, task) => {
+    //     if(error){
+    //         return console.log("Unable to find task")
+    //     }
+    //     console.log(task)
+    // })
 
 
-    db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
-        if(error){
-            return console.log("Unable to find task")
+    // db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
+    //     if(error){
+    //         return console.log("Unable to find task")
+    //     }
+    //     console.log(tasks)
+    // })
+
+
+
+
+    // U
+    // db.collection('users').updateOne({ 
+    //     _id: new ObjectID('5cd27b4f1de67c76442e130e') 
+    // }, { 
+    //     $inc: { age: 1 }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
+
+    db.collection('tasks').updateMany({
+        completed: false
+    }, {
+        $set:{
+            completed: true
         }
-        console.log(tasks)
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     })
+
 
 })
